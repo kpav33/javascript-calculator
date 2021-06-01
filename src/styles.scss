@@ -1,0 +1,199 @@
+// Maybe change design into this: https://dribbble.com/shots/6805175-Daily-UI-004-Calculator
+
+// || GENERAL
+:root {
+    --background-app: #525252;
+    --background-panel: #313131;
+    --background-buttons: #414141;
+    --background-delete: #84142d;
+    --background-delete-hover: #c02739;
+    --background-operators: #5a4848;
+    --background-operators-hover: #927777;
+    --background-equals: #144784;
+    --background-equals-hover: #1d68c2;
+    --white: #ffffff;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  color: var(--white);
+  font-family: 'Roboto', sans-serif;
+}
+
+// || APP CONTAINER
+.app {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--background-app);
+  }
+
+// || CALCULATOR
+.calculator {
+    height: auto;
+    width: 100vh;
+    background: var(--background-panel);
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+
+    // Layout for larger screens
+    @media only screen and (min-width: 768px) {
+        width: 350px;
+        height: auto;
+      }
+}
+
+// || DISPLAY
+.display {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-end;
+
+    p {
+        margin: 5px;
+    }
+}
+
+// || BUTTONS PAD
+.buttonsPad {
+    background: var(--white);
+    display: grid;
+    grid-template: repeat(5, auto) / repeat(4, auto);
+    grid-template-areas: 
+        "delete delete divide multiply"
+        "seven eight nine minus"
+        "four five six plus"
+        "one two three equals"
+        "zero zero dot equals";
+
+    .clear {
+        grid-area: delete;
+        background: var(--background-delete);
+
+        &:hover, &:focus {
+            background: var(--background-delete-hover);
+        }
+    }
+
+    .divide {
+        grid-area: divide;
+        background: var(--background-operators);
+
+        &:hover, &:focus {
+            background: var(--background-operators-hover);
+        }
+    }
+
+    .multiply {
+        grid-area: multiply;
+        background: var(--background-operators);
+
+        &:hover, &:focus {
+            background: var(--background-operators-hover);
+        }
+    }
+
+    .seven {
+        grid-area: seven;
+    }
+
+    .eight {
+        grid-area: eight;
+    }
+
+    .nine {
+        grid-area: nine;
+    }
+
+    .subtract {
+        grid-area: minus;
+        background: var(--background-operators);
+
+        &:hover, &:focus {
+            background: var(--background-operators-hover);
+        }
+    }
+
+    .four {
+        grid-area: four;
+    }
+
+    .five {
+        grid-area: five;
+    }
+
+    .six {
+        grid-area: six;
+    }
+
+    .add {
+        grid-area: plus;
+        background: var(--background-operators);
+
+        &:hover, &:focus {
+            background: var(--background-operators-hover);
+        }
+    }
+
+    .one {
+        grid-area: one;
+    }
+
+    .two {
+        grid-area: two;
+    }
+
+    .three {
+        grid-area: three;
+    }
+
+    .equals {
+        grid-area: equals;
+        background: var(--background-equals);
+
+        &:hover, &:focus {
+            background: var(--background-equals-hover);
+        }
+
+    }
+
+    .zero {
+        grid-area: zero;
+    }
+
+    .decimal {
+        grid-area: dot;
+    }
+}
+
+// || BUTTONS
+button {
+    background: var(--background-buttons);
+    border: 1px solid black;
+    padding: 2rem;
+    color: var(--white);
+    font-size: 1rem;
+
+    &:hover {
+        background: #a0a0a0;
+    }
+
+    &:focus {
+        border: 1px solid black;
+        outline: 2px solid white;
+        z-index: 10;
+        background: #a0a0a0;
+    }
+}
