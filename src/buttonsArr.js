@@ -13,15 +13,15 @@ const buttonsArr = [
   },
   {
     id: "seven",
-    value: 7,
+    value: "7",
   },
   {
     id: "eight",
-    value: 8,
+    value: "8",
   },
   {
     id: "nine",
-    value: 9,
+    value: "9",
   },
   {
     id: "subtract",
@@ -29,15 +29,15 @@ const buttonsArr = [
   },
   {
     id: "four",
-    value: 4,
+    value: "4",
   },
   {
     id: "five",
-    value: 5,
+    value: "5",
   },
   {
     id: "six",
-    value: 6,
+    value: "6",
   },
   {
     id: "add",
@@ -45,15 +45,15 @@ const buttonsArr = [
   },
   {
     id: "one",
-    value: 1,
+    value: "1",
   },
   {
     id: "two",
-    value: 2,
+    value: "2",
   },
   {
     id: "three",
-    value: 3,
+    value: "3",
   },
   {
     id: "equals",
@@ -61,7 +61,7 @@ const buttonsArr = [
   },
   {
     id: "zero",
-    value: 0,
+    value: "0",
   },
   {
     id: "decimal",

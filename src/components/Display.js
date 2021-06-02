@@ -2,9 +2,9 @@ import React from "react";
 
 function Display({ result, calculations }) {
   return (
-    <div className="display" id="display">
+    <div className="display">
       <p>{calculations}</p>
-      <p>{result}</p>
+      <p id="display">{result}</p>
     </div>
   );
 }
