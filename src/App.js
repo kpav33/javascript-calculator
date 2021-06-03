@@ -10,7 +10,7 @@ function App() {
   const [digit, setDigit] = useState("");
   const [operatorArr, setOperatorArr] = useState([]);
 
-  console.log(operatorArr);
+  // console.log(operatorArr);
 
   return (
     <div className="app">
