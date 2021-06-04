@@ -3,16 +3,7 @@ import React from "react";
 import Button from "./Button";
 import buttonsArr from "../buttonsArr";
 
-function ButtonsPad({
-  setCalculations,
-  calculations,
-  result,
-  setResult,
-  digit,
-  setDigit,
-  operatorArr,
-  setOperatorArr,
-}) {
+function ButtonsPad({ setCalculations, calculations, result, setResult }) {
   return (
     <div className="buttonsPad">
       {buttonsArr.map((button) => {
@@ -25,10 +16,6 @@ function ButtonsPad({
             calculations={calculations}
             result={result}
             setResult={setResult}
-            digit={digit}
-            setDigit={setDigit}
-            operatorArr={operatorArr}
-            setOperatorArr={setOperatorArr}
           />
         );
       })}

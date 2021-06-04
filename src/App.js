@@ -5,12 +5,8 @@ import Display from "./components/Display";
 import ButtonsPad from "./components/ButtonsPad";
 
 function App() {
-  const [calculations, setCalculations] = useState("");
+  const [calculations, setCalculations] = useState("0");
   const [result, setResult] = useState("0");
-  const [digit, setDigit] = useState("");
-  const [operatorArr, setOperatorArr] = useState([]);
-
-  // console.log(operatorArr);
 
   return (
     <div className="app">
@@ -21,10 +17,6 @@ function App() {
           calculations={calculations}
           result={result}
           setResult={setResult}
-          digit={digit}
-          setDigit={setDigit}
-          operatorArr={operatorArr}
-          setOperatorArr={setOperatorArr}
         />
       </div>
     </div>

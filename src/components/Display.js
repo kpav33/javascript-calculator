@@ -3,8 +3,8 @@ import React from "react";
 function Display({ result, calculations }) {
   return (
     <div className="display">
-      <p>{calculations}</p>
-      <p id="display">{result}</p>
+      <div>{calculations}</div>
+      <div id="display">{result}</div>
     </div>
   );
 }
