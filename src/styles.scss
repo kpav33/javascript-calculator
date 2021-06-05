@@ -11,6 +11,8 @@
     --background-operators-hover: #927777;
     --background-equals: #144784;
     --background-equals-hover: #1d68c2;
+    --calculation: #F38851;
+    --result: #74BCA0;
     --white: #ffffff;
 }
 
@@ -61,6 +63,12 @@ body {
     div {
         margin: 5px;
         word-break: break-word;
+        font-size: 1.3rem;
+        color: var(--calculation);
+    }
+
+    #display {
+        color: var(--result);
     }
 }
 
