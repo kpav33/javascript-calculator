@@ -13,7 +13,7 @@ function Button({
       switch (id) {
         case "clear":
           setCalculations("0");
-          setResult(0);
+          setResult("0");
           break;
         case "divide":
           setCalculations((prevState) => {
@@ -116,8 +116,12 @@ function Button({
           setResult("+");
           break;
         case "equals":
-          setCalculations(eval(calculations).toString());
-          setResult(eval(calculations));
+          // Function strip used to fix imprecise calculations in JS https://vyspiansky.github.io/2019/01/20/imprecise-calculations-in-javascript/
+          function strip(number) {
+            return parseFloat(number.toPrecision(16));
+          }
+          setCalculations(strip(eval(calculations)).toString());
+          setResult(strip(eval(calculations)).toString());
           break;
         case "decimal":
           if (result.includes(".")) return;
@@ -128,7 +132,7 @@ function Button({
           setResult((prevState) => {
             // Dont use strict equality with 0 for it to work
             if (
-              prevState == 0 ||
+              prevState == "0" ||
               prevState === "/" ||
               prevState === "*" ||
               prevState === "-" ||
@@ -139,7 +143,7 @@ function Button({
             return prevState + value;
           });
           setCalculations((prevState) => {
-            if (prevState == 0) {
+            if (prevState == "0") {
               return value;
             }
             return prevState + value;
@@ -152,22 +156,22 @@ function Button({
         "Don't end or start your calculations with an operator... Make sure the calculations ends or starts with a number."
       );
     }
-
-    // Create another function that will be used to use the calculator not by clicking, but rather by pressing the right number on the keyboard
   }
 
   function handleKeyDown(e) {
+    console.log(e);
+    // https://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes
     const keyCodeArr = [
-      49, 50, 51, 52, 53, 54, 55, 56, 57, 8, 106, 107, 109, 111, 13, 190,
+      8, 13, 49, 50, 51, 52, 53, 54, 55, 56, 57, 96, 97, 98, 99, 100, 101, 102,
+      103, 104, 105, 106, 107, 109, 110, 111, 190,
     ];
-    e.preventDefault();
     if (keyCodeArr.includes(e.keyCode)) {
-      value = e.key;
+      value = e.key === "," ? "." : e.key;
       try {
-        switch (e.key) {
+        switch (value) {
           case "Backspace":
             setCalculations("0");
-            setResult(0);
+            setResult("0");
             break;
           case "/":
             setCalculations((prevState) => {
@@ -270,8 +274,12 @@ function Button({
             setResult("+");
             break;
           case "Enter":
-            setCalculations(eval(calculations).toString());
-            setResult(eval(calculations));
+            function strip(number) {
+              return parseFloat(number.toPrecision(16));
+            }
+            setCalculations(strip(eval(calculations)).toString());
+            setResult(strip(eval(calculations)).toString());
+            break;
             break;
           case ".":
             if (result.includes(".")) return;
@@ -282,7 +290,7 @@ function Button({
             setResult((prevState) => {
               // Dont use strict equality with 0 for it to work
               if (
-                prevState == 0 ||
+                prevState == "0" ||
                 prevState === "/" ||
                 prevState === "*" ||
                 prevState === "-" ||
@@ -293,7 +301,7 @@ function Button({
               return prevState + value;
             });
             setCalculations((prevState) => {
-              if (prevState == 0) {
+              if (prevState == "0") {
                 return value;
               }
               return prevState + value;
@@ -302,12 +310,17 @@ function Button({
       } catch (err) {
         console.log(err);
         // Add material UI alert dialog component instead?
+        setCalculations("0");
+        setResult("0");
         alert(
           "Don't end or start your calculations with an operator... Make sure the calculations ends or starts with a number."
         );
       }
     }
   }
+
+  // Create a new function that will handle the calculator logic (including the try and catch block) and then call the function in the handleClick and handleKeyDown functions to avoid repeating twice the same business logic
+  // This way the issue of catch error persists, works well on click not on keydown (alert box keeps showing up)
 
   // Use useMemo() instead, so it doesnt get called multiple times??
   useEffect(() => {
