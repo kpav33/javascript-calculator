@@ -159,7 +159,6 @@ function Button({
   }
 
   function handleKeyDown(e) {
-    console.log(e);
     // https://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes
     const keyCodeArr = [
       8, 13, 49, 50, 51, 52, 53, 54, 55, 56, 57, 96, 97, 98, 99, 100, 101, 102,
@@ -280,7 +279,6 @@ function Button({
             setCalculations(strip(eval(calculations)).toString());
             setResult(strip(eval(calculations)).toString());
             break;
-            break;
           case ".":
             if (result.includes(".")) return;
             setCalculations((prevState) => prevState + ".");
@@ -319,10 +317,6 @@ function Button({
     }
   }
 
-  // Create a new function that will handle the calculator logic (including the try and catch block) and then call the function in the handleClick and handleKeyDown functions to avoid repeating twice the same business logic
-  // This way the issue of catch error persists, works well on click not on keydown (alert box keeps showing up)
-
-  // Use useMemo() instead, so it doesnt get called multiple times??
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
     return () => {
