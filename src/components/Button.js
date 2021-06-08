@@ -8,147 +8,144 @@ function Button({
   result,
   setResult,
 }) {
+  // Refactored from switch statement to if/else so that I can use logical operators (might be a bit slower now) and to shorten the code (no repeating of logic)
+  function calculatorLogic(caseValue) {
+    if (caseValue === "clear" || caseValue === "Backspace") {
+      setCalculations("0");
+      setResult("0");
+    } else if (caseValue === "divide" || caseValue === "/") {
+      setCalculations((prevState) => {
+        let length = prevState.length;
+        if (
+          (prevState.split("")[length - 2] === "-" &&
+            prevState.split("")[length - 5] === "/") ||
+          (prevState.split("")[length - 2] === "-" &&
+            prevState.split("")[length - 5] === "+") ||
+          (prevState.split("")[length - 2] === "-" &&
+            prevState.split("")[length - 5] === "*")
+        ) {
+          return prevState.slice(0, length - 6) + " / ";
+        }
+        if (
+          prevState.split("")[length - 2] === "/" ||
+          prevState.split("")[length - 2] === "*" ||
+          prevState.split("")[length - 2] === "-" ||
+          prevState.split("")[length - 2] === "+"
+        ) {
+          return prevState.slice(0, length - 3) + " / ";
+        }
+        return prevState + " / ";
+      });
+      setResult("/");
+    } else if (caseValue === "multiply" || caseValue === "*") {
+      setCalculations((prevState) => {
+        let length = prevState.length;
+        if (
+          (prevState.split("")[length - 2] === "-" &&
+            prevState.split("")[length - 5] === "/") ||
+          (prevState.split("")[length - 2] === "-" &&
+            prevState.split("")[length - 5] === "+") ||
+          (prevState.split("")[length - 2] === "-" &&
+            prevState.split("")[length - 5] === "*")
+        ) {
+          return prevState.slice(0, length - 6) + " * ";
+        }
+
+        if (
+          prevState.split("")[length - 2] === "/" ||
+          prevState.split("")[length - 2] === "*" ||
+          prevState.split("")[length - 2] === "-" ||
+          prevState.split("")[length - 2] === "+"
+        ) {
+          return prevState.slice(0, length - 3) + " * ";
+        }
+        return prevState + " * ";
+      });
+      setResult("*");
+    } else if (caseValue === "subtract" || caseValue === "-") {
+      setCalculations((prevState) => {
+        let length = prevState.length;
+
+        if (
+          (prevState.split("")[length - 2] === "-" &&
+            prevState.split("")[length - 5] === "/") ||
+          (prevState.split("")[length - 2] === "-" &&
+            prevState.split("")[length - 5] === "+") ||
+          (prevState.split("")[length - 2] === "-" &&
+            prevState.split("")[length - 5] === "*")
+        ) {
+          return prevState.slice(0, length - 6) + " - ";
+        }
+
+        if (prevState.split("")[length - 2] === "-") {
+          return prevState.slice(0, length - 3) + " - ";
+        }
+        return prevState + " - ";
+      });
+      setResult("-");
+    } else if (caseValue === "add" || caseValue === "+") {
+      setCalculations((prevState) => {
+        let length = prevState.length;
+
+        if (
+          (prevState.split("")[length - 2] === "-" &&
+            prevState.split("")[length - 5] === "/") ||
+          (prevState.split("")[length - 2] === "-" &&
+            prevState.split("")[length - 5] === "+") ||
+          (prevState.split("")[length - 2] === "-" &&
+            prevState.split("")[length - 5] === "*")
+        ) {
+          return prevState.slice(0, length - 6) + " + ";
+        }
+
+        if (
+          prevState.split("")[length - 2] === "/" ||
+          prevState.split("")[length - 2] === "*" ||
+          prevState.split("")[length - 2] === "-" ||
+          prevState.split("")[length - 2] === "+"
+        ) {
+          return prevState.slice(0, length - 3) + " + ";
+        }
+        return prevState + " + ";
+      });
+      setResult("+");
+    } else if (caseValue === "equals" || caseValue === "Enter") {
+      // Function strip used to fix imprecise calculations in JS https://vyspiansky.github.io/2019/01/20/imprecise-calculations-in-javascript/
+      function strip(number) {
+        return parseFloat(number.toPrecision(16));
+      }
+      setCalculations(strip(eval(calculations)).toString());
+      setResult(strip(eval(calculations)).toString());
+    } else if (caseValue === "decimal" || caseValue === ".") {
+      if (result.includes(".")) return;
+      setCalculations((prevState) => prevState + ".");
+      setResult((prevState) => prevState + value);
+    } else {
+      setResult((prevState) => {
+        // Dont use strict equality with 0 for it to work
+        if (
+          prevState == "0" ||
+          prevState === "/" ||
+          prevState === "*" ||
+          prevState === "-" ||
+          prevState === "+"
+        ) {
+          return value;
+        }
+        return prevState + value;
+      });
+      setCalculations((prevState) => {
+        if (prevState == "0") {
+          return value;
+        }
+        return prevState + value;
+      });
+    }
+  }
+
   function handleClick() {
     try {
-      switch (id) {
-        case "clear":
-          setCalculations("0");
-          setResult("0");
-          break;
-        case "divide":
-          setCalculations((prevState) => {
-            let length = prevState.length;
-            if (
-              (prevState.split("")[length - 2] === "-" &&
-                prevState.split("")[length - 5] === "/") ||
-              (prevState.split("")[length - 2] === "-" &&
-                prevState.split("")[length - 5] === "+") ||
-              (prevState.split("")[length - 2] === "-" &&
-                prevState.split("")[length - 5] === "*")
-            ) {
-              return prevState.slice(0, length - 6) + " / ";
-            }
-            if (
-              prevState.split("")[length - 2] === "/" ||
-              prevState.split("")[length - 2] === "*" ||
-              prevState.split("")[length - 2] === "-" ||
-              prevState.split("")[length - 2] === "+"
-            ) {
-              return prevState.slice(0, length - 3) + " / ";
-            }
-            return prevState + " / ";
-          });
-          setResult("/");
-          break;
-        case "multiply":
-          setCalculations((prevState) => {
-            let length = prevState.length;
-            if (
-              (prevState.split("")[length - 2] === "-" &&
-                prevState.split("")[length - 5] === "/") ||
-              (prevState.split("")[length - 2] === "-" &&
-                prevState.split("")[length - 5] === "+") ||
-              (prevState.split("")[length - 2] === "-" &&
-                prevState.split("")[length - 5] === "*")
-            ) {
-              return prevState.slice(0, length - 6) + " * ";
-            }
-
-            if (
-              prevState.split("")[length - 2] === "/" ||
-              prevState.split("")[length - 2] === "*" ||
-              prevState.split("")[length - 2] === "-" ||
-              prevState.split("")[length - 2] === "+"
-            ) {
-              return prevState.slice(0, length - 3) + " * ";
-            }
-            return prevState + " * ";
-          });
-          setResult("*");
-          break;
-        case "subtract":
-          setCalculations((prevState) => {
-            let length = prevState.length;
-
-            if (
-              (prevState.split("")[length - 2] === "-" &&
-                prevState.split("")[length - 5] === "/") ||
-              (prevState.split("")[length - 2] === "-" &&
-                prevState.split("")[length - 5] === "+") ||
-              (prevState.split("")[length - 2] === "-" &&
-                prevState.split("")[length - 5] === "*")
-            ) {
-              return prevState.slice(0, length - 6) + " - ";
-            }
-
-            if (prevState.split("")[length - 2] === "-") {
-              return prevState.slice(0, length - 3) + " - ";
-            }
-            return prevState + " - ";
-          });
-          setResult("-");
-          break;
-        case "add":
-          setCalculations((prevState) => {
-            let length = prevState.length;
-
-            if (
-              (prevState.split("")[length - 2] === "-" &&
-                prevState.split("")[length - 5] === "/") ||
-              (prevState.split("")[length - 2] === "-" &&
-                prevState.split("")[length - 5] === "+") ||
-              (prevState.split("")[length - 2] === "-" &&
-                prevState.split("")[length - 5] === "*")
-            ) {
-              return prevState.slice(0, length - 6) + " + ";
-            }
-
-            if (
-              prevState.split("")[length - 2] === "/" ||
-              prevState.split("")[length - 2] === "*" ||
-              prevState.split("")[length - 2] === "-" ||
-              prevState.split("")[length - 2] === "+"
-            ) {
-              return prevState.slice(0, length - 3) + " + ";
-            }
-            return prevState + " + ";
-          });
-          setResult("+");
-          break;
-        case "equals":
-          // Function strip used to fix imprecise calculations in JS https://vyspiansky.github.io/2019/01/20/imprecise-calculations-in-javascript/
-          function strip(number) {
-            return parseFloat(number.toPrecision(16));
-          }
-          setCalculations(strip(eval(calculations)).toString());
-          setResult(strip(eval(calculations)).toString());
-          break;
-        case "decimal":
-          if (result.includes(".")) return;
-          setCalculations((prevState) => prevState + ".");
-          setResult((prevState) => prevState + value);
-          break;
-        default:
-          setResult((prevState) => {
-            // Dont use strict equality with 0 for it to work
-            if (
-              prevState == "0" ||
-              prevState === "/" ||
-              prevState === "*" ||
-              prevState === "-" ||
-              prevState === "+"
-            ) {
-              return value;
-            }
-            return prevState + value;
-          });
-          setCalculations((prevState) => {
-            if (prevState == "0") {
-              return value;
-            }
-            return prevState + value;
-          });
-      }
+      calculatorLogic(id);
     } catch (err) {
       console.log(err);
       // Add material UI alert dialog component instead?
@@ -159,6 +156,10 @@ function Button({
   }
 
   function handleKeyDown(e) {
+    // Set focus away here to make sure no buttons are still focused from the handleClick function which causes a bug when you try to first use clicking with calculator and then keyboard controls
+    const nodeList = document.querySelectorAll("button");
+    [...nodeList].map((button) => button.blur());
+
     // https://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes
     const keyCodeArr = [
       8, 13, 49, 50, 51, 52, 53, 54, 55, 56, 57, 96, 97, 98, 99, 100, 101, 102,
@@ -167,144 +168,7 @@ function Button({
     if (keyCodeArr.includes(e.keyCode)) {
       value = e.key === "," ? "." : e.key;
       try {
-        switch (value) {
-          case "Backspace":
-            setCalculations("0");
-            setResult("0");
-            break;
-          case "/":
-            setCalculations((prevState) => {
-              let length = prevState.length;
-              if (
-                (prevState.split("")[length - 2] === "-" &&
-                  prevState.split("")[length - 5] === "/") ||
-                (prevState.split("")[length - 2] === "-" &&
-                  prevState.split("")[length - 5] === "+") ||
-                (prevState.split("")[length - 2] === "-" &&
-                  prevState.split("")[length - 5] === "*")
-              ) {
-                return prevState.slice(0, length - 6) + " / ";
-              }
-              if (
-                prevState.split("")[length - 2] === "/" ||
-                prevState.split("")[length - 2] === "*" ||
-                prevState.split("")[length - 2] === "-" ||
-                prevState.split("")[length - 2] === "+"
-              ) {
-                return prevState.slice(0, length - 3) + " / ";
-              }
-              return prevState + " / ";
-            });
-            setResult("/");
-            break;
-          case "*":
-            setCalculations((prevState) => {
-              let length = prevState.length;
-              if (
-                (prevState.split("")[length - 2] === "-" &&
-                  prevState.split("")[length - 5] === "/") ||
-                (prevState.split("")[length - 2] === "-" &&
-                  prevState.split("")[length - 5] === "+") ||
-                (prevState.split("")[length - 2] === "-" &&
-                  prevState.split("")[length - 5] === "*")
-              ) {
-                return prevState.slice(0, length - 6) + " * ";
-              }
-
-              if (
-                prevState.split("")[length - 2] === "/" ||
-                prevState.split("")[length - 2] === "*" ||
-                prevState.split("")[length - 2] === "-" ||
-                prevState.split("")[length - 2] === "+"
-              ) {
-                return prevState.slice(0, length - 3) + " * ";
-              }
-              return prevState + " * ";
-            });
-            setResult("*");
-            break;
-          case "-":
-            setCalculations((prevState) => {
-              let length = prevState.length;
-
-              if (
-                (prevState.split("")[length - 2] === "-" &&
-                  prevState.split("")[length - 5] === "/") ||
-                (prevState.split("")[length - 2] === "-" &&
-                  prevState.split("")[length - 5] === "+") ||
-                (prevState.split("")[length - 2] === "-" &&
-                  prevState.split("")[length - 5] === "*")
-              ) {
-                return prevState.slice(0, length - 6) + " - ";
-              }
-
-              if (prevState.split("")[length - 2] === "-") {
-                return prevState.slice(0, length - 3) + " - ";
-              }
-              return prevState + " - ";
-            });
-            setResult("-");
-            break;
-          case "+":
-            setCalculations((prevState) => {
-              let length = prevState.length;
-
-              if (
-                (prevState.split("")[length - 2] === "-" &&
-                  prevState.split("")[length - 5] === "/") ||
-                (prevState.split("")[length - 2] === "-" &&
-                  prevState.split("")[length - 5] === "+") ||
-                (prevState.split("")[length - 2] === "-" &&
-                  prevState.split("")[length - 5] === "*")
-              ) {
-                return prevState.slice(0, length - 6) + " + ";
-              }
-
-              if (
-                prevState.split("")[length - 2] === "/" ||
-                prevState.split("")[length - 2] === "*" ||
-                prevState.split("")[length - 2] === "-" ||
-                prevState.split("")[length - 2] === "+"
-              ) {
-                return prevState.slice(0, length - 3) + " + ";
-              }
-              return prevState + " + ";
-            });
-            setResult("+");
-            break;
-          case "Enter":
-            function strip(number) {
-              return parseFloat(number.toPrecision(16));
-            }
-            setCalculations(strip(eval(calculations)).toString());
-            setResult(strip(eval(calculations)).toString());
-            break;
-          case ".":
-            if (result.includes(".")) return;
-            setCalculations((prevState) => prevState + ".");
-            setResult((prevState) => prevState + value);
-            break;
-          default:
-            setResult((prevState) => {
-              // Dont use strict equality with 0 for it to work
-              if (
-                prevState == "0" ||
-                prevState === "/" ||
-                prevState === "*" ||
-                prevState === "-" ||
-                prevState === "+"
-              ) {
-                return value;
-              }
-              return prevState + value;
-            });
-            setCalculations((prevState) => {
-              if (prevState == "0") {
-                return value;
-              }
-              return prevState + value;
-            });
-        }
+        calculatorLogic(value);
       } catch (err) {
         console.log(err);
         // Add material UI alert dialog component instead?
