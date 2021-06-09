@@ -16,6 +16,8 @@ function Button({
     } else if (caseValue === "divide" || caseValue === "/") {
       setCalculations((prevState) => {
         let length = prevState.length;
+        // If statement checks whether the calculations ends with any of the possible operators and the operator - and if it does it replaces them with the clicked operator (In this case with divider " / ")
+        // This was done to solve User Story #13
         if (
           (prevState.split("")[length - 2] === "-" &&
             prevState.split("")[length - 5] === "/") ||
@@ -26,6 +28,9 @@ function Button({
         ) {
           return prevState.slice(0, length - 6) + " / ";
         }
+        // Done for the same reasons as above if statement, with the difference that this if statement is used for cases where only one operator is present in the calculation
+        // This was done to solve User Story #13
+        // This same logic is repeated below for every operator
         if (
           prevState.split("")[length - 2] === "/" ||
           prevState.split("")[length - 2] === "*" ||
