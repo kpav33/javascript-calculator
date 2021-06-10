@@ -1,13 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
+import { Context } from "../container/Context";
 
-function Button({
-  id,
-  value,
-  setCalculations,
-  calculations,
-  result,
-  setResult,
-}) {
+function Button({ id, value }) {
+  const { calculations, setCalculations, result, setResult } =
+    useContext(Context);
+
   // Refactored from switch statement to if/else so that I can use logical operators (might be a bit slower now) and to shorten the code (no repeating of logic)
   function calculatorLogic(caseValue) {
     if (caseValue === "clear" || caseValue === "Backspace") {
@@ -17,7 +14,8 @@ function Button({
       setCalculations((prevState) => {
         let length = prevState.length;
         // If statement checks whether the calculations ends with any of the possible operators and the operator - and if it does it replaces them with the clicked operator (In this case with divider " / ")
-        // This was done to solve User Story #13
+        // - 2 and - 5 used, because each operator has one empty space on its right and left
+        // This was done to solve User Story #13 (If 2 or more operators are entered consecutively, the operation performed should be the last operator entered (excluding the negative (-) sign).)
         if (
           (prevState.split("")[length - 2] === "-" &&
             prevState.split("")[length - 5] === "/") ||
@@ -29,7 +27,7 @@ function Button({
           return prevState.slice(0, length - 6) + " / ";
         }
         // Done for the same reasons as above if statement, with the difference that this if statement is used for cases where only one operator is present in the calculation
-        // This was done to solve User Story #13
+        // This was done to solve User Story #13 (If 2 or more operators are entered consecutively, the operation performed should be the last operator entered (excluding the negative (-) sign).)
         // This same logic is repeated below for every operator
         if (
           prevState.split("")[length - 2] === "/" ||

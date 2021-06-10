@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
+import { Context } from "../container/Context";
 
-function Display({ result, calculations }) {
+function Display() {
+  const { result, calculations } = useContext(Context);
+
   // Inline style used to make the font size of result smaller over certain lengths, to make sure the result stays in one line
   const fontSize =
     result.toString().length > 18
